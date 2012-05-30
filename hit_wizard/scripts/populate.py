@@ -14,6 +14,8 @@ from ..models import (
     MyModel,
     User,
     Base,
+    Data,
+    Page
     )
 
 def usage(argv):
@@ -36,3 +38,12 @@ def main(argv=sys.argv):
         DBSession.add(model)
         user = User(login='sam', password='sam')
         DBSession.add(user)
+
+        data = Data(data_type=0, value='I like to eat pancakes')
+        DBSession.add(data)
+        data = Data(data_type=0, value='I like to dance with monkeys')
+        DBSession.add(data)
+        DBSession.flush()
+        page = Page(data_type=0, description='Is this a happy thing?')
+        DBSession.add(page)
+

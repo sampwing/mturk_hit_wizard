@@ -11,9 +11,22 @@ from .models import (
     DBSession,
     MyModel,
     User,
+    Page,
+    Data,
+    Annotation
     )
 
 
+
+@view_config(route_name='home', permission='home', renderer='templates/home.pt')
+def my_view(request):
+    page = DBSession.query(Page).first()
+    print page
+    data = DBSession.query(Data).filter(Data.data_type==page.data_type).all()
+    print data
+    return {'user': None, 'data': data, 'page': page}
+
+"""
 @view_config(route_name='home', permission='home', renderer='templates/home.pt')
 def my_view(request):
    login = authenticated_userid(request)
@@ -21,7 +34,7 @@ def my_view(request):
       user = DBSession.query(User).filter(User.login==login).first()
       return {'user': user}   
    return {'user': None}
-
+"""
 
 @view_config(route_name='success', permission='success', renderer='templates/success.pt')
 def success_view(request):
