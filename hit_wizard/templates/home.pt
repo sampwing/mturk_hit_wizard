@@ -22,10 +22,7 @@
 			$(function(){
 
 				// Slider
-				$('#slider').slider({
-					range: true,
-					values: [17, 67]
-				});
+				$('div[selector|="slider"]').slider();
 
 			});
         </script>
@@ -66,10 +63,11 @@
     </div>
 
     <div class="container">
-        <h2 class="demoHeaders">Slider</h2>
-            <div id="slider"></div>
-      <h1>Bootstrap starter template</h1>
-      <p>Use this document as a way to quick start any new project.<br> All you get is this message and a barebones HTML document.</p>
+        <h1>${page.description}</h1>
+        <div tal:repeat="datum data">
+            ${datum.value}
+            <div id="slider" selector="slider-${datum.id}"></div>
+        </div>
 
     </div> <!-- /container -->
 
