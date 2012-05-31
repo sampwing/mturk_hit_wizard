@@ -18,6 +18,17 @@ from .models import (
 
 
 
+
+@view_config(route_name='view', permission='home', renderer='templates/view.pt')
+def view(request):
+    page_id = request.matchdict['page_id']
+    page = DBSession.query(Page).filter(Page.id==page_id).first()
+    print page
+    data = DBSession.query(Data).filter(Data.data_type==page.data_type).all()
+    print data
+    return {'user': None, 'data': data, 'page': page}
+
+
 @view_config(route_name='home', permission='home', renderer='templates/home.pt')
 def my_view(request):
     page = DBSession.query(Page).first()
@@ -26,23 +37,15 @@ def my_view(request):
     print data
     return {'user': None, 'data': data, 'page': page}
 
-"""
-@view_config(route_name='home', permission='home', renderer='templates/home.pt')
-def my_view(request):
-   login = authenticated_userid(request)
-   if login:
-      user = DBSession.query(User).filter(User.login==login).first()
-      return {'user': user}   
-   return {'user': None}
-"""
 
 @view_config(route_name='success', permission='success', renderer='templates/success.pt')
 def success_view(request):
    login = authenticated_userid(request)
    if login:
       user = DBSession.query(User).filter(User.login==login).first()
-      return {'user': user}
-   return {'user': None}
+      pages = DBSession.query(Page).all()
+      return {'user': user, 'pages': pages}
+   return {'user': None, 'pages': pages}
 
 
 @view_config(route_name='logout', permission='logout')

@@ -23,6 +23,8 @@ def main(global_config, **settings):
     
     config.add_route('login', '/login', factory=PageFactory)
     config.add_route('logout', '/logout', factory=PageFactory)
+
+    config.add_route('view', '/view/{page_id}', factory=PageFactory)
     config.scan()
     return config.make_wsgi_app()
 

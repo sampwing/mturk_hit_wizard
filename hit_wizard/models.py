@@ -82,7 +82,7 @@ class User(Base):
       self.login = login
       self.user = UserObject(login=login, password=password)
 
-
+#page generation
 class Data(Base):
     __tablename__ = 'data'
     id = Column(Integer, autoincrement=True, primary_key=True)

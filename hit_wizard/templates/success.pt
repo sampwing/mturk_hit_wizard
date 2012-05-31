@@ -38,11 +38,11 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="#">bootstrap-auth</a>
+          <a class="brand" href="#">MTurk Wizard</a>
           <div class="nav-collapse">
             <ul class="nav">
-              <li><a href="${request.route_url('home')}">Main Content</a></li>
-              <li class="active"><a href="${request.route_url('login')}">Hidden Content</a></li>
+              <li><a href="${request.route_url('home')}">Main</a></li>
+              <li class="active"><a href="${request.route_url('login')}">Admin</a></li>
               <li tal:condition="user"><a href="${request.route_url('logout')}">Logout</a></li>
             </ul>
           </div><!--/.nav-collapse -->
@@ -50,11 +50,13 @@
       </div>
     </div>
 
-    <div class="container">
+    <div class="container span8 offset4">
 
-      <h1>Success logging in...</h1>
-      <p>Use this document as a way to quick start any new project.<br> All you get is this message and a barebones HTML document.</p>
-
+      <h1>Available Pages:</h1>
+      <p>Use this interface to add or edit pages.</p>
+      <ul>
+        <li tal:repeat="page pages">description: "${page.description}", annotations_per_page: ${page.annotations_per_page} <a class="btn" href="view/${page.id}">View</a><a class="btn" href="edit/${page.id}">Edit</a><a class="btn" href="delete/${page.id}">Delete</a></li>
+      </ul>
 
     </div> <!-- /container -->
 
