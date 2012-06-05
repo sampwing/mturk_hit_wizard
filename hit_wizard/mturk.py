@@ -1,3 +1,4 @@
+"""
 from boto.mturk.connection import MTurkConnection
 
 from boto.mturk.question import (
@@ -39,3 +40,4 @@ print mturk.balance()
 
 print mturk.create_hit(title="Comment Form", description="Free form for entering comments")
 #http://www.toforge.com/2011/04/boto-mturk-tutorial-create-hits/
+"""
