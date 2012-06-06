@@ -5,6 +5,8 @@ PasteDeploy==1.5.0
 Pygments==1.5
 SQLAlchemy==0.7.7
 WebOb==1.2rc1
+-e git+git@github.com:sampwing/philter.git@73703d328a0892c0c942278f9f487fb7da8adcb3#egg=basic-dev
+-e git+git@github.com:sampwing/mturk_hit_wizard.git@f526d5620c5c8eb9572b3f5e70162a36bae6577a#egg=hit_wizard-dev
 ipython==0.12.1
 psycopg2==2.4.5
 pyramid==1.3
