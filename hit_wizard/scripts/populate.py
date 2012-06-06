@@ -11,6 +11,7 @@ from pyramid.paster import (
 
 from ..models import (
     DBSession,
+    metadata,
     MyModel,
     User,
     Base,
@@ -32,10 +33,11 @@ def main(argv=sys.argv):
     settings = get_appsettings(config_uri)
     engine = engine_from_config(settings, 'sqlalchemy.')
     DBSession.configure(bind=engine)
-    Base.metadata.create_all(engine)
+    Base.metadata.create_all(engine, checkfirst=True)
+    #metadata.create_all(engine)
     with transaction.manager:
-        model = MyModel(name='one', value=1)
-        DBSession.add(model)
+        #model = MyModel(name='one', value=1)
+        #DBSession.add(model)
         user = User(login='sam', password='sam')
         DBSession.add(user)
 
@@ -44,6 +46,6 @@ def main(argv=sys.argv):
         data = Data(data_type=0, value='I like to dance with monkeys')
         DBSession.add(data)
         DBSession.flush()
-        page = Page(data_type=0, description='Is this a happy thing?')
+        page = Page(data_type=0, name="Here is a bunch of happy stuff", description='Is this a happy thing?')
         DBSession.add(page)
 

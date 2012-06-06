@@ -19,10 +19,7 @@
     		<script type="text/javascript" src="${request.static_url('hit_wizard:static/js/jquery-1.7.2.min.js')}"></script>
     		<script type="text/javascript" src="${request.static_url('hit_wizard:static/js/jquery-ui-1.8.20.custom.min.js')}"></script>
 		<script type="text/javascript">
-			$(function(){
 
-
-			});
         </script>
 
 
@@ -61,34 +58,26 @@
     </div>
 
     <div class="container">
+        <h1><center>Create a New HIT</center></h1><br>
 
-        <form method="post" action="/record">
-        <input type="hidden" name="page_id" value="${page.id}">
-
-
-        <h1 class="span4 offset4"><center>${page.name}</center></h1>
-
-
-        <div tal:repeat="datum data" class="well span4 offset4">
-            <h3>${datum.value}</h3>
+        <form class="well form-inline offset3 span5" method="post" enctype="multipart/form-data" action="/save">
+            <label class="span1">HIT Name</label>
+            <input class="span3" type="text" id="name" name="name" placeholder="Default">
             <br>
 
-            <div align="center">
-                ${page.description}
-                <br>
+            <label class="span1">Description</label>
+            <input class="span3" type="textarea" id="description" name="description" placeholder="Enter a Description for the HIT">
+            <br>
 
-                <input type="radio" name="option_${datum.id}" value="No" checked>
-                No
+            <label class="span2">Annotations Per Page</label>
+            <input class="span2" type="text" id="perpage" name="perpage" placeholder="5">
+            <br>
 
-                <input type="radio" name="option_${datum.id}" value="Yes">
-                Yes
-            </div>
-        </div>
+            <label>Boolean Data CSV</label>
+            <input class="span3" type="file" value="" id="data" name="data">
+            <br>
 
-
-        <button type="submit" class="btn">Submit</button>
-
-
+            <button class="span2 offset2" type="submit" class="btn">Create HIT</button>
         </form>
 
     </div> <!-- /container -->

@@ -11,21 +11,69 @@ from .models import (
     DBSession,
     MyModel,
     User,
-    Page,
     Data,
+    Page,
     Annotation
     )
 
 
+@view_config(route_name='record', permission='success')
+def record_annotations(request):
+    import re
+    page_id = request.POST['page_id']
+    for key in request.POST:
+        result = re.search(r'option_([0-9]+)', key)
+        if not result: continue
 
 
-@view_config(route_name='view', permission='home', renderer='templates/view.pt')
+
+
+@view_config(route_name='save', permission='success')
+def save_data(request):
+    name = request.POST['name']
+    description = request.POST['description']
+    perpage = int(request.POST['perpage'])
+    data_name = request.POST['data'].filename
+    data_file = request.POST['data'].file
+    print name, description, data_name
+    #process the data_file as a csv and load it into the database
+    import csv
+    reader = csv.reader(data_file, delimiter=',')
+
+    type_id = 1
+    for row in reader:
+        data = Data(data_type=type_id, value=row[0])
+        DBSession.add(data)
+    page = Page(data_type=type_id, name=name, description=description, annotations_per_page=perpage)
+    DBSession.add(page)
+    url = request.route_url('success')
+    return HTTPFound(location=url)
+
+
+@view_config(route_name='create', permission='success', renderer='templates/create.pt')
+def create_page(request):
+    login = authenticated_userid(request)
+    if login:
+        user = DBSession.query(User).filter(User.login==login).first()
+        return {'user': user}
+    return {'user': None}
+
+
+@view_config(route_name='delete', permission='success')
+def delete_page(request):
+    page_id = request.matchdict['page_id']
+    page = DBSession.query(Page).filter(Page.id==page_id).first()
+    DBSession.delete(page)
+    success = request.route_url('success')
+    return HTTPFound(location=success)
+
+@view_config(route_name='view', permission='success', renderer='templates/view.pt')
 def view(request):
     page_id = request.matchdict['page_id']
     page = DBSession.query(Page).filter(Page.id==page_id).first()
-    print page
     data = DBSession.query(Data).filter(Data.data_type==page.data_type).all()
-    print data
+    # XXX lets limit it to only showing the first 5 items for testing the annotations
+    data = data[:5]
     return {'user': None, 'data': data, 'page': page}
 
 
@@ -56,7 +104,6 @@ def logout(request):
 
 @view_config(route_name='login', permission='login', renderer='templates/login.pt')
 def login_view(request):
-
    if authenticated_userid(request):
       success = request.route_url('success')
       return HTTPFound(location=success)

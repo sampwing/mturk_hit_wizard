@@ -1,5 +1,5 @@
 from pyramid.config import Configurator
-from sqlalchemy import engine_from_config
+from sqlalchemy import engine_from_config, create_engine
 
 from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid.authorization import ACLAuthorizationPolicy
@@ -25,6 +25,10 @@ def main(global_config, **settings):
     config.add_route('logout', '/logout', factory=PageFactory)
 
     config.add_route('view', '/view/{page_id}', factory=PageFactory)
+    config.add_route('delete', '/delete/{page_id}', factory=PageFactory)
+    config.add_route('create', '/create', factory=PageFactory)
+    config.add_route('save', '/save', factory=PageFactory)
+    config.add_route('record', '/record', factory=PageFactory)
     config.scan()
     return config.make_wsgi_app()
 

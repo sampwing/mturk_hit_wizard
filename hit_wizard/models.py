@@ -7,7 +7,7 @@ from sqlalchemy import (
     Boolean
     )
 
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.ext.declarative import declarative_base, MetaData
 
 from sqlalchemy.orm import (
     scoped_session,
@@ -22,7 +22,8 @@ from pyramid.security import Authenticated
 
 
 DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
-Base = declarative_base()
+metadata = MetaData()
+Base = declarative_base(metadata=metadata)
 
 
 class PageFactory(object):
@@ -36,8 +37,8 @@ class PageFactory(object):
    def __init__(self, request):
       self.request = request
 
+
 class UserFactory(PageFactory):
-   
    def __getitem__(self, key):
       user = DBSession.query(User).filter(User.login==key).first()
       if user:
@@ -109,33 +110,36 @@ class Data(Base):
         return "<{} {} {} {}>".format(self.__tablename__, self.id, self.data_type, self.value)
 
 
-class Annotation(Base):
-    __tablename__ = 'annotation'
-    id = Column(Integer, autoincrement=True, primary_key=True)
-    data_type = Column(Integer, ForeignKey('data.data_type'))
-    value = Column(Integer, ForeignKey('data.value'))
-    result = Column(Boolean)
-
-    def __init__(self, data_type, value, result):
-        self.data_type = data_type
-        self.value = value
-        self.result = result
-
-
 class Page(Base):
     __tablename__ = 'page'
     id = Column(Integer, autoincrement=True, primary_key=True)
     data_type = Column(Integer, ForeignKey('data.data_type'))
+    name = Column(Text)
     description = Column(Text)
     annotations_per_page = Column(Integer)
     uses_gold = Column(Boolean)
 
-    def __init__(self, data_type, description='default description', annotations_per_page=1, uses_gold=False):
+    def __init__(self, data_type, name='Default name', description='default description', annotations_per_page=1, uses_gold=False):
         self.data_type = data_type
+        self.name = name
         self.description = description
         self.annotations_per_page = annotations_per_page
         self.uses_gold = uses_gold
 
     def __repr__(self):
         return "<{} {} {}>".format(self.__tablename__, self.data_type, self.description)
+
+
+class Annotation(Base):
+    __tablename__ = 'annotation'
+    id = Column(Integer, autoincrement=True, primary_key=True)
+    page_id = Column(Integer, ForeignKey('page.id'))
+    data_id = Column(Integer, ForeignKey('data.id'))
+    result = Column(Boolean)
+
+    def __init__(self, page_id, data_id, result):
+        self.page_id = page_id
+        self.data_id = data_id
+        self.result = result
+
 
