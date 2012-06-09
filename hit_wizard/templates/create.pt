@@ -77,6 +77,10 @@
             <input class="span3" type="file" value="" id="data" name="data">
             <br>
 
+            <label>Gold Standard CSV</label>
+            <input class="span3" type="file" value="" id="gold" name="gold">
+            <br>
+
             <button class="span2 offset2" type="submit" class="btn">Create HIT</button>
         </form>
 

@@ -41,9 +41,13 @@ def main(argv=sys.argv):
         user = User(login='sam', password='sam')
         DBSession.add(user)
 
+        data = Data(data_type=0, value='I like to have fun', gold=True, gold_value=True)
+        DBSession.add(data)
         data = Data(data_type=0, value='I like to eat pancakes')
         DBSession.add(data)
         data = Data(data_type=0, value='I like to dance with monkeys')
+        DBSession.add(data)
+        data = Data(data_type=0, value="I enjoy jumping out of windows, when the risk of death is high.")
         DBSession.add(data)
         DBSession.flush()
         page = Page(data_type=0, name="Here is a bunch of happy stuff", description='Is this a happy thing?')

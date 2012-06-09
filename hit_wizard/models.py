@@ -72,6 +72,7 @@ class UserObject(object):
    def check_password(self, password=None):
       return self.password == password
 
+
 class User(Base):
    __tablename__ = 'users'
 
@@ -83,6 +84,7 @@ class User(Base):
       self.login = login
       self.user = UserObject(login=login, password=password)
 
+
 #page generation
 class Data(Base):
     __tablename__ = 'data'
@@ -92,13 +94,15 @@ class Data(Base):
     range_lower = Column(Integer)
     range_upper = Column(Integer)
     gold = Column(Boolean)
+    gold_value = Column(Boolean)
 
-    def __init__(self, data_type, value, range_lower=0, range_upper=0, gold=False):
+    def __init__(self, data_type, value, range_lower=0, range_upper=0, gold=False, gold_value=False):
         self.data_type = data_type
         self.value = value
         self.range_lower = range_lower
         self.range_upper = range_upper
         self.gold = gold
+        self.gold_value = gold_value
 
     def is_bool(self):
         return self.range_lower == self.range_upper
@@ -127,17 +131,19 @@ class Page(Base):
         self.uses_gold = uses_gold
 
     def __repr__(self):
-        return "<{} {} {}>".format(self.__tablename__, self.data_type, self.description)
+        return "<{} '{}' '{}'>".format(self.__tablename__, self.data_type, self.description)
 
 
 class Annotation(Base):
     __tablename__ = 'annotation'
     id = Column(Integer, autoincrement=True, primary_key=True)
+    random_identifier = Column(Integer)
     page_id = Column(Integer, ForeignKey('page.id'))
     data_id = Column(Integer, ForeignKey('data.id'))
     result = Column(Boolean)
 
-    def __init__(self, page_id, data_id, result):
+    def __init__(self, random_identifier, page_id, data_id, result):
+        self.random_identifier = random_identifier
         self.page_id = page_id
         self.data_id = data_id
         self.result = result

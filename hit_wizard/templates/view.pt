@@ -68,6 +68,20 @@
 
         <h1 class="span4 offset4"><center>${page.name}</center></h1>
 
+        <!-- gold standard -->
+        <div class="well span4 offset4" style="background-color:#FFD700">
+            <h3>${gold.value}</h3>
+            <br>
+            <div align="center">
+                ${page.description}
+                <br>
+                <input type="radio" name="gold_${gold.id}" value="No" checked>
+                No
+                <input type="radio" name="gold_${gold.id}" value="Yes">
+                Yes
+            </div>
+        </div>
+
 
         <div tal:repeat="datum data" class="well span4 offset4">
             <h3>${datum.value}</h3>

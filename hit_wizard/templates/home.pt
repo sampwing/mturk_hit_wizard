@@ -62,15 +62,15 @@
       </div>
     </div>
 
-    <div class="container">
-        <h1 class="span4 offset4"><center>${page.description}</center></h1>
-
-        <div tal:repeat="datum data" class="well span4 offset4">
-            ${datum.value}
-            <br>
-            <div id="slider" selector="slider-${datum.id}"></div>
+    <div class="container span4 offset4">
+        <div >
+            <h1 ><center>Choose a Quiz</center></h1>
         </div>
+        <br>
 
+        <ul>
+            <li tal:repeat="page pages"><a href="/view/${page.id}">${page.name}</a></li>
+        </ul>
 
     </div> <!-- /container -->
 
