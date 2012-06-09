@@ -34,7 +34,7 @@ def record_annotations(request):
             gold_value = True if request.POST[key] == 'Yes' else False
             #check whether this value is accurate
             gold_data = DBSession.query(Data).filter(Data.id==result.group(1)).first()
-            passed_gold_test = gold_data.gold_value == gold_value
+            passed_gold_test = (gold_data.gold_value == gold_value)
             print 'RESULT:{}'.format(passed_gold_test)
             continue
         result = re.search(r'option_([0-9]+)', key)
@@ -127,8 +127,12 @@ def view(request):
 
 @view_config(route_name='home', permission='home', renderer='templates/home.pt')
 def my_view(request):
+    login = authenticated_userid(request)
+    user = None
+    if login:
+        user = DBSession.query(User).filter(User.login==login).first()
     pages = DBSession.query(Page).all()
-    return {'pages': pages, 'user': None}
+    return {'pages': pages, 'user': user}
 
 
 @view_config(route_name='success', permission='success', renderer='templates/success.pt')
