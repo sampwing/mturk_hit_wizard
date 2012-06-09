@@ -65,7 +65,7 @@
         <form method="post" action="/record">
         <input type="hidden" name="page_id" value="${page.id}">
 
-
+        <div>
         <h1 class="span4 offset4"><center>${page.name}</center></h1>
 
         <!-- gold standard -->
@@ -81,7 +81,7 @@
                 Yes
             </div>
         </div>
-
+        <br>
 
         <div tal:repeat="datum data" class="well span4 offset4">
             <h3>${datum.value}</h3>
@@ -102,7 +102,7 @@
 
         <button type="submit" class="btn">Submit</button>
 
-
+    <div>
         </form>
 
     </div> <!-- /container -->

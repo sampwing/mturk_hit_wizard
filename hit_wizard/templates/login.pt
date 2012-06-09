@@ -52,14 +52,13 @@
 
     <div class="container">
 
-      <h1>Bootstrap starter template</h1>
-      <p>Use this document as a way to quick start any new project.<br> All you get is this message and a barebones HTML document.</p>
 
-      <div>
-      </div>
 
-      <div>
-         <form class="well form-inline span3" method="post">
+      <div class="span4 offset4">
+        <h1>Administrative Login</h1>
+        <p>Logging in will allow access to the restricted content, such as creating, modifying, and deleting HITs.</p>
+
+         <form class="well form-inline" method="post">
             <center>
 
                <input type="text" class="input-small" placeholder="Username" name="login">

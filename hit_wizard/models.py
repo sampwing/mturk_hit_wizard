@@ -91,24 +91,14 @@ class Data(Base):
     id = Column(Integer, autoincrement=True, primary_key=True)
     data_type = Column(Integer)
     value = Column(Text)
-    range_lower = Column(Integer)
-    range_upper = Column(Integer)
     gold = Column(Boolean)
     gold_value = Column(Boolean)
 
-    def __init__(self, data_type, value, range_lower=0, range_upper=0, gold=False, gold_value=False):
+    def __init__(self, data_type, value, gold=False, gold_value=False):
         self.data_type = data_type
         self.value = value
-        self.range_lower = range_lower
-        self.range_upper = range_upper
         self.gold = gold
         self.gold_value = gold_value
-
-    def is_bool(self):
-        return self.range_lower == self.range_upper
-
-    def is_gold(self):
-        return self.gold
 
     def __repr__(self):
         return "<{} {} {} {}>".format(self.__tablename__, self.id, self.data_type, self.value)
@@ -117,7 +107,7 @@ class Data(Base):
 class Page(Base):
     __tablename__ = 'page'
     id = Column(Integer, autoincrement=True, primary_key=True)
-    data_type = Column(Integer, ForeignKey('data.data_type'))
+    data_type = Column(Integer)#, ForeignKey('data.data_type'))
     name = Column(Text)
     description = Column(Text)
     annotations_per_page = Column(Integer)
