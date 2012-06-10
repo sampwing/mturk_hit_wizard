@@ -62,7 +62,7 @@
 
     <div class="container">
 
-        <form method="post" action="/record">
+        <form method="post" action="http://workersandbox.mturk.com/mturk/externalSubmit"> <!-- action="/record"> -->
         <input type="hidden" name="page_id" value="${page.id}">
 
         <div>

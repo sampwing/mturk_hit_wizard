@@ -6,6 +6,7 @@ from boto.mturk.question import (
     QuestionContent,
     FreeTextAnswer,
     AnswerSpecification,
+    ExternalQuestion
 )
 
 ACCESS_ID ='AKIAIJ6MLX6LGQTP3MRA'
@@ -33,9 +34,17 @@ class MTurk(object):
         self.mtc.create_hit(questions=question_form, max_assignments=1, title=title, description=description,
             duration=60*5, reward=0.01)
 
+    def external(self):
+        q = ExternalQuestion(external_url="http://mturk-hit-wizard.herokuapp.com/view/2", frame_height=800)
+        #conn = MTurkConnection(host=HOST)
+        keywords=['boto', 'test', 'doctest']
+        create_hit_rs = self.mtc.create_hit(question=q, lifetime=60*65,max_assignments=2,title="Boto External Question Test", keywords=keywords,reward = 0.05, duration=60*6,approval_delay=60*60, annotation='An annotation from boto external question test', response_groups=['Minimal','HITDetail','HITQuestion','HITAssignmentSummary',])
+        assert(create_hit_rs.status == True)
+
 
 mturk = MTurk()
 print mturk.balance()
 
-print mturk.create_hit(title="Comment Form", description="Free form for entering comments")
+#print mturk.create_hit(title="Comment Form", description="Free form for entering comments")
+mturk.external()
 #http://www.toforge.com/2011/04/boto-mturk-tutorial-create-hits/
