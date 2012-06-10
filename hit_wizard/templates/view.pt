@@ -63,9 +63,9 @@
     <div class="container">
 
         <form method="post" action="http://workersandbox.mturk.com/mturk/externalSubmit"> <!-- action="/record"> -->
-        shiznit - > ${request.matchdict["assignmentId"]}<br>
+        shiznit - > ${request.GET("assignmentId")}<br>
         <input type="hidden" name="page_id" value="${page.id}">
-        <input type="hidden" name="assignmentId" value="${request.matchdict['assignmentId']}">
+        <input type="hidden" name="assignmentId" value="${request.GET('assignmentId')}">
         <div>
         <h1 class="span4 offset4"><center>${page.name}</center></h1>
 
