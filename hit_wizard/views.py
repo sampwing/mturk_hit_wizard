@@ -4,6 +4,8 @@ from pyramid.security import authenticated_userid
 from pyramid.httpexceptions import HTTPForbidden
 from pyramid.httpexceptions import HTTPFound
 
+from pyramid.response import Response
+
 from pyramid.security import remember
 from pyramid.security import forget
 
@@ -19,11 +21,28 @@ from .models import (
 from sqlalchemy import desc, func, distinct
 
 
+@view_config(route_name='results')
+def record_annotations(request):
+    import csv
+    page_id = request.matchdict['page_id']
+    results = csv.writer(open('.results', 'wb'), delimiter=',')
+    annotations = DBSession.query(Annotation).filter(Annotation.page_id==page_id).all()
+    for annotation in annotations:
+        text = DBSession.query(Data).filter(Data.id==annotation.data_id).first().value
+        results.writerow([annotation.result, text])
+    response = Response(content_type='text/csv')
+    response.app_iter = open('.results', 'rb')
+    return response
+
+
 @view_config(route_name='record')
 def record_annotations(request):
     import re
     import random
     page_id = request.POST['page_id']
+
+    #random_identifier = request.
+
     random_identifier = int(random.random() * 100000) #to be used until you can uniquely id them
 
     passed_gold_test = False
@@ -31,11 +50,15 @@ def record_annotations(request):
     for key in request.POST:
         result = re.search(r'gold_([0-9]+)', key)
         if result:
+
+
             gold_value = True if request.POST[key] == 'Yes' else False
             #check whether this value is accurate
             gold_data = DBSession.query(Data).filter(Data.id==result.group(1)).first()
             passed_gold_test = (gold_data.gold_value == gold_value)
+            print gold_data.gold_value, gold_value, request.POST[key]
             print 'RESULT:{}'.format(passed_gold_test)
+
             continue
         result = re.search(r'option_([0-9]+)', key)
         if not result: continue
@@ -86,7 +109,7 @@ def save_data(request):
     reader = csv.reader(gold_file, delimiter=',')
     for row in reader:
         if not row: break
-        boolean = True if row[0] == 'TRUE' else False
+        boolean = True if row[1] == 'TRUE' else False
         data = Data(data_type=type_id, value=row[0], gold=True, gold_value=boolean)
         DBSession.add(data)
 
@@ -113,6 +136,7 @@ def delete_page(request):
     success = request.route_url('success')
     return HTTPFound(location=success)
 
+
 @view_config(route_name='view', renderer='templates/view.pt')
 def view(request):
     import random
@@ -132,6 +156,7 @@ def my_view(request):
     if login:
         user = DBSession.query(User).filter(User.login==login).first()
     pages = DBSession.query(Page).all()
+
     return {'pages': pages, 'user': user}
 
 
@@ -168,6 +193,7 @@ def logout(request):
    home = request.route_url('home')
    return HTTPFound(location=home, headers=headers)
 
+
 @view_config(route_name='login', permission='login', renderer='templates/login.pt')
 def login_view(request):
    if authenticated_userid(request):
@@ -176,7 +202,7 @@ def login_view(request):
    login = ''
 
    did_fail = False
-   next = request.params.get('next') or request.route_url('home')
+   #next = request.params.get('next') or request.route_url('home')
    print "request.POST : ", request.POST
    if 'submit' in request.POST:
       login = request.POST.get('login', '') 

@@ -13,11 +13,15 @@
 \maketitle
 
 \begin{abstract}
-In this paper I will describe the tool I created to allow the rapid creation and modification of HITs for using on Amazon's Mechanical Turk service.
+In this paper I will describe the tool I created to allow the rapid creation and modification of Human Intelligence Tasks (HITs) for using on Amazon's Mechanical Turk service.
 \end{abstract}
 
 \section{Introduction}
-With the advent of new services such as Amazon's Mechanical Turk there has been a new surge in crowd sourcing for gathering annotations for a variety of tasks.
+With the advent of new services such as Amazon's Mechanical Turk there has been a new surge in crowd sourcing for gathering annotations for a variety of tasks.  This service allows for corporations and research institutions alike to gather annotations for a variety of tasks quickly.  
+
+Amazon provides several methods for creating HITs, through both a web interface as well as a programmatic API.  
+
+Currently Mechanical Turk has a method called a qualifier in place, this allows requests to weed out users who aren't reliable before asking them to annotate a HIT.  While this is an effective method for weeding out spammers and people who don't have sufficient domain knowledge to make the annotations, it doesn't allow for decisions to be made in realtime as to whether allow further jobs for a user.
 
 \paragraph{Outline}
 The remainder of this article is organized as follows.
@@ -26,15 +30,40 @@ Our new and exciting results are described in Section~\ref{results}.
 Finally, Section~\ref{conclusions} gives the conclusions.
 
 \section{Previous work}\label{previous work}
+\cite{snow2008cheap}
+
 A much longer \LaTeXe{} example was written by Gil~\cite{Gil:02}.
 
+\section{HIT Generation Tool}\label{tool}
+So in approaching this problem I knew what I wanted this tool to be capable of.  First off it needed to have a web interface to allow anyone to easily navigate to it, without needing any proprietary software.  In the spirit of keeping the tool simple while allowing for some modifications to how the HIT would be displayed, I opted for a simple form for generating the HITs which would allow a user to upload the data to be annotated, along with a gold standard to be used during the online sanity checks.  There are a couple other fields that allow for the questions used for each annotation to be specified as well as the number of annotations to be displayed per page.
+
+
+
 \section{Experiment}\label{experiment}
+The experiment was set up using some of the data I have been working on in my lab.  The data consists of 636 posts, gathered from a debate web forum, each of which has a correlated boolean feature indicating if the post appears to be sarcastic or not.  
+
+I then set up two different tasks, the first of which is the control, where basically the task is created in the same way we have been creating tasks.  This means that we ask the user to read a number of posts and for each one indicate whether they believe that the post is sarcastic or not.
+
+For the second task we essentially repeat the process of the first task.  However in addition to that we add sanity checks to the task, these sanity checks use our gold standard and compare them against what the user is submitting for a subset of the annotations we are asking them to make.  Now we use this sanity check to determine if we wish to allow the user to make further annotations.  For my experiment I put one of these sanity checks among 5 annotations the user was to make, if they passed the sanity check they were taken to another page with 5 more annotations to make in addition to a new sanity check.  So the second task is what I am proposing will be a better method for gathering accurate annotations quickly.  
 
 \section{Results}\label{results}
 In this section we describe the results.
 
 \section{Conclusions}\label{conclusions}
-We worked hard, and achieved very little.
+\subsection{Experiment}
+
+\subsection{Development}
+Approaching this project was a little overwhelming.  Initially I believed that I had over specified what I believed I would be able to accomplish in regards to developing this tool.  This was mostly due to not previously having done any web programming, that in itself allowed for this project to be a great learning experience.  
+
+Having been familiar with developing in Python, I looked around for a web framework that would not only work well for this project but something that I could become more familiar with and use for future problems.  I ended up using the Pyramid\footnote{http://www.pylonsproject.org/} MVC Framework, this framework appealed to me because of its high degree of modularity and the ability to swap out any portion of the MVC I wished to best suit my needs.  
+
+Again with my unfamiliarity of web programming, I sought out a library for working on what would be actually displayed.  For this I chose Twitter Bootstrap\footnote{http://twitter.github.com/bootstrap/}, which allows you to easily specify how objects will appear in the webpage using a grid like layout, which is similar to how I have done GUI programming in the past.
+
+Amazon's Mechanical Turk has an exposed API that they offer such that developers can leverage the functionality of Mechanical Turk as they see fit to support their needs.  There is a library, Boto\footnote{https://github.com/boto/boto}}, for interfacing between this API and Python that I chose to use to speed up some of the development time that would have been required to otherwise roll out my own interface.
+
+Lastly, not having a server to host the tool on I instead opted to find a service available online to handle hosting.  It was required to get the tool online so that Mechanical Turk could redirect the External Questions to this tool.  Heroku\footnote{www.heroku.com/} is a startup which does app hosting on the cloud, and it seemed like a perfect fit.  Additionally deployment of a Pyramid app through Heroku was a snap.
+
+\newpage
 
 \bibliographystyle{abbrv}
 \bibliography{tim245_report_mturk}

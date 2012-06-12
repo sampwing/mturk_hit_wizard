@@ -55,7 +55,7 @@
       <h1>Available Pages:</h1>
       <p>Use this interface to add or edit pages.</p>
       <ul>
-        <li tal:repeat="page pages">description: "${page.description}"(${kappa[page.id]}), annotations_per_page: ${page.annotations_per_page} <a class="btn" href="view/${page.id}">View</a><a class="btn" href="edit/${page.id}">Edit</a><a class="btn" href="delete/${page.id}">Delete</a></li>
+        <li tal:repeat="page pages">description: "${page.description}"(${kappa[page.id]}), annotations_per_page: ${page.annotations_per_page} <a class="btn" href="view/${page.id}">View</a><a class="btn" href="result/${page.id}">Results</a><a class="btn" href="delete/${page.id}">Delete</a></li>
       </ul>
       <a href="/create" class="btn">Create a HIT</a>
     </div> <!-- /container -->

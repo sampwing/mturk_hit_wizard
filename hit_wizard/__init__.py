@@ -24,11 +24,15 @@ def main(global_config, **settings):
     config.add_route('login', '/login', factory=PageFactory)
     config.add_route('logout', '/logout', factory=PageFactory)
 
+    config.add_route('result', '/result/{page_id}', factory=PageFactory)
+
     config.add_route('view', '/view/{page_id}', factory=PageFactory)
     config.add_route('delete', '/delete/{page_id}', factory=PageFactory)
     config.add_route('create', '/create', factory=PageFactory)
     config.add_route('save', '/save', factory=PageFactory)
     config.add_route('record', '/record', factory=PageFactory)
+
+
     config.scan()
     return config.make_wsgi_app()
 

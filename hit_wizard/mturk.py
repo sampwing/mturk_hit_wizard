@@ -41,10 +41,8 @@ class MTurk(object):
         create_hit_rs = self.mtc.create_hit(question=q, lifetime=60*65,max_assignments=2,title="Boto External Question Test", keywords=keywords,reward = 0.05, duration=60*6,approval_delay=60*60, annotation='An annotation from boto external question test', response_groups=['Minimal','HITDetail','HITQuestion','HITAssignmentSummary',])
         assert(create_hit_rs.status == True)
 
-
-mturk = MTurk()
-print mturk.balance()
-
-#print mturk.create_hit(title="Comment Form", description="Free form for entering comments")
-mturk.external()
-#http://www.toforge.com/2011/04/boto-mturk-tutorial-create-hits/
+if __name__ == '__main__':
+    mturk = MTurk()
+    print mturk.balance()
+    mturk.external()
+    #http://www.toforge.com/2011/04/boto-mturk-tutorial-create-hits/
